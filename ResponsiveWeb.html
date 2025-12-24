@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Interactive Navigation Menu</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Navigation Menu -->
+  <nav id="navbar">
+    <div class="logo">SKILLCRAFT</div>
+    <ul class="menu">
+      <li><a href="#home">Home</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#services">Services</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="section hero" id="home">
+    <h1 class="hero-title">
+      Build <span>Responsive</span> & <span>Interactive</span> Web Experiences
+    </h1>
+    <p class="hero-subtitle">
+      Learn, build, and grow your web development skills with SkillCraft.
+    </p>
+    <button class="hero-btn">Get Started</button>
+  </section>
+
+  <!-- Features Section -->
+  <section class="section content">
+    <h2>Why Choose SkillCraft?</h2>
+    <div class="features">
+      <div class="card">
+        <h3>Responsive Design</h3>
+        <p>Layouts that adapt smoothly to all screen sizes.</p>
+      </div>
+      <div class="card">
+        <h3>Modern UI</h3>
+        <p>Clean, minimal, and user-friendly interfaces.</p>
+      </div>
+      <div class="card">
+        <h3>Easy to Learn</h3>
+        <p>Beginner-friendly code with real-world examples.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- About Section -->
+  <section class="section content" id="about">
+    <h2>About Us</h2>
+    <p>
+      SkillCraft is focused on empowering students and developers by providing
+      hands-on projects and practical learning experiences in web development.
+    </p>
+  </section>
+
+  <!-- Services Section -->
+  <section class="section content" id="services">
+    <h2>Our Services</h2>
+    <ul class="services-list">
+      <li>Web Design & Development</li>
+      <li>Frontend Projects & Internships</li>
+      <li>UI/UX Design Guidance</li>
+      <li>Career-Focused Learning</li>
+    </ul>
+  </section>
+
+ 
+  <!-- Footer -->
+  <footer class="footer">
+    <p>© 2025 SkillCraft Technologies. All rights reserved.</p>
+  </footer>
+
+  <!-- Scroll Effect Script -->
+  <script>
+    window.addEventListener("scroll", function () {
+      const navbar = document.getElementById("navbar");
+      navbar.classList.toggle("scrolled", window.scrollY > 50);
+    });
+  </script>
+
+</body>
+</html>
