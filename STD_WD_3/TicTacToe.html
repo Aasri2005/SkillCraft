@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Tic Tac Toe</title>
+
+<style>
+  body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: #f2f2f2;
+    font-family: "Segoe UI", sans-serif;
+  }
+
+  .container {
+    text-align: center;
+  }
+
+  h1 {
+    margin-bottom: 10px;
+  }
+
+  .mode-buttons button {
+    margin: 5px;
+    padding: 8px 15px;
+    font-size: 14px;
+    cursor: pointer;
+  }
+
+  .status {
+    margin: 10px;
+    font-size: 18px;
+  }
+
+  .board {
+    display: grid;
+    grid-template-columns: repeat(3, 100px);
+    gap: 5px;
+    margin: 15px auto;
+  }
+
+  .cell {
+    width: 100px;
+    height: 100px;
+    background: white;
+    font-size: 36px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    border-radius: 6px;
+  }
+
+  .cell:hover {
+    background: #eaeaea;
+  }
+
+  .restart {
+    margin-top: 10px;
+    padding: 8px 20px;
+    font-size: 15px;
+  }
+</style>
+</head>
+
+<body>
+
+<div class="container">
+  <h1>Tic Tac Toe</h1>
+
+  <div class="mode-buttons">
+    <button id="pvp">Player vs Player</button>
+    <button id="pve">Player vs Bot</button>
+  </div>
+
+  <div class="status" id="status">Choose a mode</div>
+
+  <div class="board" id="board"></div>
+
+  <button class="restart" id="restart">Restart</button>
+</div>
+
+<script>
+  const board = document.getElementById("board");
+  const statusText = document.getElementById("status");
+  const restartBtn = document.getElementById("restart");
+
+  let gameBoard = ["", "", "", "", "", "", "", "", ""];
+  let currentPlayer = "X";
+  let gameActive = false;
+  let vsBot = false;
+
+  const winningCombos = [
+    [0,1,2], [3,4,5], [6,7,8],
+    [0,3,6], [1,4,7], [2,5,8],
+    [0,4,8], [2,4,6]
+  ];
+
+  function startGame(botMode) {
+    gameBoard.fill("");
+    board.innerHTML = "";
+    currentPlayer = "X";
+    gameActive = true;
+    vsBot = botMode;
+    statusText.textContent = "Player X's turn";
+
+    for (let i = 0; i < 9; i++) {
+      const cell = document.createElement("div");
+      cell.classList.add("cell");
+      cell.dataset.index = i;
+      cell.addEventListener("click", handleCellClick);
+      board.appendChild(cell);
+    }
+  }
+
+  function handleCellClick(e) {
+    const index = e.target.dataset.index;
+
+    if (gameBoard[index] !== "" || !gameActive) return;
+
+    makeMove(index, currentPlayer);
+
+    if (checkWinner()) return;
+
+    currentPlayer = currentPlayer === "X" ? "O" : "X";
+    statusText.textContent = `Player ${currentPlayer}'s turn`;
+
+    if (vsBot && currentPlayer === "O") {
+      setTimeout(botMove, 500);
+    }
+  }
+
+  function makeMove(index, player) {
+    gameBoard[index] = player;
+    board.children[index].textContent = player;
+  }
+
+  function botMove() {
+    let available = gameBoard
+      .map((val, i) => val === "" ? i : null)
+      .filter(v => v !== null);
+
+    const randomIndex = available[Math.floor(Math.random() * available.length)];
+    makeMove(randomIndex, "O");
+
+    if (checkWinner()) return;
+
+    currentPlayer = "X";
+    statusText.textContent = "Player X's turn";
+  }
+
+  function checkWinner() {
+    for (let combo of winningCombos) {
+      const [a, b, c] = combo;
+      if (
+        gameBoard[a] &&
+        gameBoard[a] === gameBoard[b] &&
+        gameBoard[a] === gameBoard[c]
+      ) {
+        statusText.textContent = `Player ${gameBoard[a]} wins! 🎉`;
+        gameActive = false;
+        return true;
+      }
+    }
+
+    if (!gameBoard.includes("")) {
+      statusText.textContent = "It's a Draw!";
+      gameActive = false;
+      return true;
+    }
+
+    return false;
+  }
+
+  document.getElementById("pvp").addEventListener("click", () => startGame(false));
+  document.getElementById("pve").addEventListener("click", () => startGame(true));
+  restartBtn.addEventListener("click", () => startGame(vsBot));
+</script>
+
+</body>
+</html>
