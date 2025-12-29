@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>To-Do App</title>
+
+<style>
+  body {
+    margin: 0;
+    font-family: "Segoe UI", sans-serif;
+    background: linear-gradient(135deg, #1d1f2f, #3a3d5c);
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+  }
+
+  .todo-container {
+    background: #22243a;
+    padding: 20px;
+    width: 400px;
+    border-radius: 12px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.4);
+  }
+
+  h2 {
+    text-align: center;
+    margin-bottom: 15px;
+  }
+
+  .input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  input, button {
+    padding: 10px;
+    border-radius: 6px;
+    border: none;
+    font-size: 14px;
+  }
+
+  input {
+    outline: none;
+  }
+
+  button {
+    background: #4caf50;
+    color: white;
+    cursor: pointer;
+  }
+
+  button:hover {
+    background: #43a047;
+  }
+
+  ul {
+    list-style: none;
+    padding: 0;
+    margin-top: 15px;
+  }
+
+  li {
+    background: #2f3152;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 6px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  li.completed {
+    text-decoration: line-through;
+    opacity: 0.6;
+  }
+
+  .task-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .task-actions button {
+    margin-left: 5px;
+    background: #ff9800;
+  }
+
+  .task-actions button.delete {
+    background: #f44336;
+  }
+
+  .task-actions button.complete {
+    background: #2196f3;
+  }
+
+  .date-time {
+    font-size: 12px;
+    margin-top: 4px;
+    color: #ccc;
+  }
+</style>
+</head>
+
+<body>
+
+<div class="todo-container">
+  <h2>To-Do List</h2>
+
+  <div class="input-group">
+    <input type="text" id="taskInput" placeholder="Enter task">
+    <input type="datetime-local" id="dateTimeInput">
+    <button id="addTask">Add Task</button>
+  </div>
+
+  <ul id="taskList"></ul>
+</div>
+
+<script>
+  const taskInput = document.getElementById("taskInput");
+  const dateTimeInput = document.getElementById("dateTimeInput");
+  const addTaskBtn = document.getElementById("addTask");
+  const taskList = document.getElementById("taskList");
+
+  addTaskBtn.addEventListener("click", addTask);
+
+  function addTask() {
+    if (taskInput.value === "") return alert("Please enter a task!");
+
+    const li = document.createElement("li");
+
+    const taskHeader = document.createElement("div");
+    taskHeader.className = "task-header";
+
+    const taskText = document.createElement("span");
+    taskText.textContent = taskInput.value;
+
+    const actions = document.createElement("div");
+    actions.className = "task-actions";
+
+    const completeBtn = document.createElement("button");
+    completeBtn.textContent = "✔";
+    completeBtn.className = "complete";
+
+    const editBtn = document.createElement("button");
+    editBtn.textContent = "✏";
+
+    const deleteBtn = document.createElement("button");
+    deleteBtn.textContent = "🗑";
+    deleteBtn.className = "delete";
+
+    actions.appendChild(completeBtn);
+    actions.appendChild(editBtn);
+    actions.appendChild(deleteBtn);
+
+    taskHeader.appendChild(taskText);
+    taskHeader.appendChild(actions);
+
+    const dateTime = document.createElement("div");
+    dateTime.className = "date-time";
+    dateTime.textContent = dateTimeInput.value
+      ? "Due: " + dateTimeInput.value.replace("T", " ")
+      : "";
+
+    li.appendChild(taskHeader);
+    li.appendChild(dateTime);
+    taskList.appendChild(li);
+
+    completeBtn.addEventListener("click", () => {
+      li.classList.toggle("completed");
+    });
+
+    deleteBtn.addEventListener("click", () => {
+      taskList.removeChild(li);
+    });
+
+    editBtn.addEventListener("click", () => {
+      const newTask = prompt("Edit task:", taskText.textContent);
+      if (newTask) taskText.textContent = newTask;
+    });
+
+    taskInput.value = "";
+    dateTimeInput.value = "";
+  }
+</script>
+
+</body>
+</html>
